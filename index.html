@@ -27,8 +27,8 @@
       <a href="#impact">Impact</a>
       <a href="#leadership">Leadership</a>
       <a href="#career">Career</a>
-      <a class="nav-linkedin" href="https://www.linkedin.com/in/gavin-sutton-afcgi" target="_blank" rel="noreferrer" aria-label="Gavin Sutton on LinkedIn (opens in a new tab)"><span class="linkedin-icon" aria-hidden="true">in</span><span>LinkedIn</span></a>
-      <a class="nav-cta" href="Gavin-Sutton-CV.pdf" download>Download CV</a>
+      <a class="nav-linkedin" href="https://www.linkedin.com/in/gavin-sutton-afcgi" data-umami-event="linkedin_click" data-umami-event-placement="navigation" target="_blank" rel="noreferrer" aria-label="Gavin Sutton on LinkedIn (opens in a new tab)"><span class="linkedin-icon" aria-hidden="true">in</span><span>LinkedIn</span></a>
+      <a class="nav-cta" href="Gavin-Sutton-CV.pdf" data-umami-event="cv_download_click" data-umami-event-placement="navigation" download>Download CV</a>
     </nav>
   </header>
 
@@ -40,8 +40,8 @@
         <p class="intro">I develop people and engineering leaders, set direction for customer-facing products, and build the trust and accountability teams need to deliver with confidence.</p>
         <div class="hero-actions">
           <a class="button button-primary" href="#impact">See how I lead</a>
-          <a class="button button-secondary" href="Gavin-Sutton-CV.pdf" download>Download my CV</a>
-          <a class="button button-secondary" href="https://www.linkedin.com/in/gavin-sutton-afcgi" target="_blank" rel="noreferrer"><span class="linkedin-icon" aria-hidden="true">in</span>View LinkedIn</a>
+          <a class="button button-secondary" href="Gavin-Sutton-CV.pdf" data-umami-event="cv_download_click" data-umami-event-placement="intro" download>Download my CV</a>
+          <a class="button button-secondary" href="https://www.linkedin.com/in/gavin-sutton-afcgi" data-umami-event="linkedin_click" data-umami-event-placement="intro" target="_blank" rel="noreferrer"><span class="linkedin-icon" aria-hidden="true">in</span>View LinkedIn</a>
         </div>
         <p class="availability">Based in the UK · Open to remote and hybrid opportunities</p>
       </div>
@@ -164,20 +164,76 @@
       <h2>Interested in engineering leadership that builds capability for the long term?</h2>
       <div class="contact-actions">
         <a class="button button-light" href="mailto:hello@gavinsutton.co.uk">Email me</a>
-        <a class="button button-light" href="https://www.linkedin.com/in/gavin-sutton-afcgi" target="_blank" rel="noreferrer"><span class="linkedin-icon" aria-hidden="true">in</span>Connect on LinkedIn <span aria-hidden="true">↗</span></a>
-        <a class="text-link" href="Gavin-Sutton-CV.pdf" download>Download CV <span aria-hidden="true">↓</span></a>
+        <a class="button button-light" href="https://www.linkedin.com/in/gavin-sutton-afcgi" data-umami-event="linkedin_click" data-umami-event-placement="contact" target="_blank" rel="noreferrer"><span class="linkedin-icon" aria-hidden="true">in</span>Connect on LinkedIn <span aria-hidden="true">↗</span></a>
+        <a class="text-link" href="Gavin-Sutton-CV.pdf" data-umami-event="cv_download_click" data-umami-event-placement="contact" download>Download CV <span aria-hidden="true">↓</span></a>
+      </div>
+    </section>
+    <section class="section about" id="privacy">
+      <div>
+        <h2>Privacy &amp; analytics</h2>
+      </div>
+      <div class="prose">
+        <p>I use Umami Cloud to understand how this portfolio is used and improve it. I review aggregate counts of visits, traffic sources and clicks on the LinkedIn and CV links. Umami processes browser and device information and uses IP addresses to estimate location and group visits. The analytics setup uses no tracking cookies and does not send visitor names or email addresses.</p>
+        <p>Analytics reports are kept for up to six months. Analytics is on by default. You can turn it off for free at any time. Your browser saves your choice for this site.</p>
+        <p>For privacy questions, email <a href="mailto:hello@gavinsutton.co.uk">hello@gavinsutton.co.uk</a>.</p>
+        <p id="analytics-status">Analytics requires JavaScript.</p>
+        <button class="button button-secondary" type="button" id="analytics-toggle" hidden style="display: none"></button>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
     <p>© <span id="year">2026</span> Gavin Sutton AfCGI</p>
+    <a href="#privacy" style="color: inherit">Privacy &amp; analytics</a>
   </footer>
   <a class="back-to-top" href="#top" aria-label="Back to the top">
     <span aria-hidden="true">↑</span>
     <span>Back to top</span>
   </a>
   <script src="script.js"></script>
+  <script>
+    (() => {
+      const preferenceKey = 'umami.disabled';
+      const status = document.getElementById('analytics-status');
+      const toggle = document.getElementById('analytics-toggle');
+      let disabled;
+
+      try {
+        disabled = localStorage.getItem(preferenceKey) === '1';
+      } catch {
+        status.textContent = 'Analytics is off because this browser cannot save your preference.';
+        return;
+      }
+
+      status.textContent = disabled ? 'Analytics is off in this browser.' : 'Analytics is on in this browser.';
+      toggle.textContent = disabled ? 'Turn analytics on' : 'Turn analytics off';
+      toggle.hidden = false;
+      toggle.style.removeProperty('display');
+
+      toggle.addEventListener('click', () => {
+        try {
+          if (disabled) {
+            localStorage.removeItem(preferenceKey);
+          } else {
+            localStorage.setItem(preferenceKey, '1');
+          }
+        } catch {
+          status.textContent = 'Your browser could not save the change. Analytics is still ' + (disabled ? 'off.' : 'on.');
+          return;
+        }
+        window.location.hash = 'privacy';
+        window.location.reload();
+      });
+
+      if (!disabled) {
+        const tracker = document.createElement('script');
+        tracker.src = 'https://cloud.umami.is/script.js';
+        tracker.dataset.websiteId = '773a2199-2d66-42ee-8280-ea7f86feed96';
+        tracker.dataset.excludeSearch = 'true';
+        tracker.dataset.excludeHash = 'true';
+        document.head.append(tracker);
+      }
+    })();
+  </script>
 </body>
 </html>
-
